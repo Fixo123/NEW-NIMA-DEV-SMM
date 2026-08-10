@@ -1,11 +1,30 @@
 <?php
 // NIMA DEV SMM - Database configuration
-// Fill these in with the values your hosting provider (InfinityFree / 000webhost) gives you.
+//
+// On Heroku: these are read automatically from the JAWSDB_URL config var
+// (set when you add the JawsDB MySQL add-on) — you don't need to edit
+// anything below for Heroku.
+//
+// On InfinityFree / 000webhost: JAWSDB_URL won't exist, so it falls back
+// to the manual values below — fill those in with what your host gives you.
 
-define('DB_HOST', 'localhost');      // usually 'localhost' or something like 'sqlXXX.infinityfree.com'
-define('DB_NAME', 'your_db_name');
-define('DB_USER', 'your_db_user');
-define('DB_PASS', 'your_db_password');
+$jawsdbUrl = getenv('JAWSDB_URL');
+
+if ($jawsdbUrl) {
+    $dbParts = parse_url($jawsdbUrl);
+    define('DB_HOST', $dbParts['host']);
+    define('DB_PORT', $dbParts['port'] ?? 3306);
+    define('DB_NAME', ltrim($dbParts['path'], '/'));
+    define('DB_USER', $dbParts['user']);
+    define('DB_PASS', $dbParts['pass']);
+} else {
+    // --- Manual fallback (InfinityFree / 000webhost) ---
+    define('DB_HOST', 'localhost');      // usually 'localhost' or something like 'sqlXXX.infinityfree.com'
+    define('DB_PORT', 3306);
+    define('DB_NAME', 'your_db_name');
+    define('DB_USER', 'your_db_user');
+    define('DB_PASS', 'your_db_password');
+}
 
 // --- SMM API provider settings ---
 // Get these from your provider's dashboard (Add Funds -> API, or "API" menu item).
@@ -20,7 +39,7 @@ define('BANK_BRANCH', 'Your Branch');
 
 try {
     $pdo = new PDO(
-        "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8mb4",
+        "mysql:host=" . DB_HOST . ";port=" . DB_PORT . ";dbname=" . DB_NAME . ";charset=utf8mb4",
         DB_USER,
         DB_PASS,
         [
