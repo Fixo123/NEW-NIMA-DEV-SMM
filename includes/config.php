@@ -19,7 +19,7 @@ if ($jawsdbUrl) {
     define('DB_PASS', $dbParts['pass']);
 } else {
     // --- Manual fallback (InfinityFree / 000webhost) ---
-    define('DB_HOST', 'localhost');      // usually 'localhost' or something like 'sqlXXX.infinityfree.com'
+    define('DB_HOST', 'https://nima-smm-a3cef4bd11c3.herokuapp.com/');      // usually 'localhost' or something like 'sqlXXX.infinityfree.com'
     define('DB_PORT', 3306);
     define('DB_NAME', 'your_db_name');
     define('DB_USER', 'your_db_user');
